@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header id="red">
         <h1>Find a Blood Donation Camp Near You</h1>
@@ -30,15 +31,15 @@
             </select>
 
             <label>Date:</label>
-            <input type="Date" id="name" required placeholder="Enter Date">
-            
+            <input type="date" id="date" required>
+
             <label>Phone Number:</label>
             <input type="tel" id="phone" required placeholder="+91 XXXXX XXXXX">
 
             <label>Email:</label>
             <input type="email" id="email" required placeholder="abc@gmail.com">
 
-            <button type="submit"><a href="thankyou.html">Register</a></button>
+            <button type="submit">Register</button>
         </form>
 
         <p id="successMessage"></p>
@@ -47,5 +48,51 @@
     <footer>
         <p>&copy; 2025 Blood Donation Camp</p>
     </footer>
+    <script>
+
+        document.getElementById("donationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            var city = document.getElementById("City").value;
+            var date = document.getElementById("date").value;
+            var phone = document.getElementById("phone").value.trim();
+            var email = document.getElementById("email").value.trim();
+            if (city === "") {
+                alert("⚠ Please select a city.");
+                return;
+            }
+            var today = new Date();
+            var entered = new Date(date);
+
+            today.setHours(0,0,0,0);
+            entered.setHours(0,0,0,0);
+
+            if (entered < today) {
+                alert("⚠ Please select a future date! Past dates are not allowed.");
+                return;
+            }
+
+            
+            var phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                alert("⚠ Enter a valid 10-digit phone number.");
+                return;
+            }
+
+            var emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!emailPattern.test(email)) {
+                alert("⚠ Enter a valid email address.");
+                return;
+            }
+
+            // --- FINAL CONFIRMATION ---
+            var confirmSubmit = confirm("✔ All details look correct.\nDo you want to submit?");
+            
+            if (confirmSubmit) {
+                window.location.href = "thankyou.html";
+            }
+        });
+
+    </script>
+
 </body>
 </html>

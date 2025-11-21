@@ -17,14 +17,15 @@
         <h2>Registration Form</h2>
 
         <form id="donationForm">
+
             <label>Name:</label>
             <input type="text" id="name" required placeholder="Enter your name">
-        
 
             <label>Age:</label>
             <input type="number" id="age" required placeholder="Enter your age">
+
             <label>Date of Birth:</label>
-            <input type="Date" id="name" required placeholder="Enter birthdate">
+            <input type="date" id="dob" required>
 
             <label>Blood Group:</label>
             <select id="bloodGroup" required>
@@ -38,8 +39,9 @@
                 <option>AB+</option>
                 <option>AB-</option>
             </select>
+
             <label>Gender:</label>
-            <select id="bloodGroup" required>
+            <select id="gender" required>
                 <option value="">Select</option>
                 <option>Male</option>
                 <option>Female</option>
@@ -51,10 +53,8 @@
             <label>Email:</label>
             <input type="email" id="email" required placeholder="abc@gmail.com">
 
-            <button type="submit"><a href="thankyou.html">Register</a></button>
+            <button type="submit">Register</button>
         </form>
-         <div class="scene">
-    
 
         <p id="successMessage"></p>
     </section>
@@ -63,9 +63,89 @@
         <p>&copy; 2025 Blood Donation Camp</p>
     </footer>
 
+  
+    <script>
+    document.getElementById("donationForm").addEventListener("submit", function(event) {
+        event.preventDefault();  // stop default page reload
+
+        // Get values
+        var name = document.getElementById("name").value.trim();
+        var age = parseInt(document.getElementById("age").value.trim());
+        var dob = document.getElementById("dob").value;
+        var blood = document.getElementById("bloodGroup").value;
+        var gender = document.getElementById("gender").value;
+        var phone = document.getElementById("phone").value.trim();
+        var email = document.getElementById("email").value.trim();
+
+        // ----------- AGE BASED ON DOB CHECK -------------
+        function calculateAge(birthDate) {
+            var today = new Date();
+            var dobDate = new Date(birthDate);
+            var calculatedAge = today.getFullYear() - dobDate.getFullYear();
+
+            var monthDiff = today.getMonth() - dobDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                calculatedAge--;
+            }
+
+            return calculatedAge;
+        }
+
+        var realAge = calculateAge(dob);
+
+
+
+        
+        if (name.length < 3) {
+            alert("⚠ Name should be at least 3 characters!");
+            return;
+        }
+
+        
+        if (age < 18 || age > 65) {
+            alert("⚠ Age must be between 18 and 65.");
+            return;
+        }
+
+       
+        if (realAge !== age) {
+            alert("⚠ Your entered age does not match your Date of Birth!\nYour real age is: " + realAge);
+            return;
+        }
+
+       
+        var phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phone)) {
+            alert("⚠ Enter a valid 10-digit phone number!");
+            return;
+        }
+
+
+        var emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!emailPattern.test(email)) {
+            alert("⚠ Enter a valid email address!");
+            return;
+        }
+
+
+        if (blood === "") {
+            alert("⚠ Please select your blood group.");
+            return;
+        }
+
+        if (gender === "") {
+            alert("⚠ Please select gender.");
+            return;
+        }
+
+
+        var confirmSubmit = confirm("✔ All details look correct.\nDo you want to submit?");
+        if (confirmSubmit) {
+            window.location.href = "thankyou.html";
+        }
+    });
+</script>
 
 </body>
 </html>
-
-
-
